@@ -2,10 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { HardwaresService } from '../services/hardwares.service';
 import { CreateHardwareDto } from '../dtos/create-hardware.dto';
 import { UpdateHardwareDto } from '../dtos/update-hardware.dto';
+import { FeatureFlagService } from 'src/commons/helpers/featureflag.service';
 
 @Controller('hardwares')
 export class HardwaresController {
-  constructor(private readonly hardwaresService: HardwaresService) {}
+  constructor(private readonly hardwaresService: HardwaresService, private featureFlag: FeatureFlagService) {
+    this.featureFlag = featureFlag
+  }
 
   @Post()
   create(@Body() createHardwareDto: CreateHardwareDto) {
@@ -14,6 +17,7 @@ export class HardwaresController {
 
   @Get()
   findAll() {
+    this.featureFlag.get("TEST")
     return this.hardwaresService.findAll();
   }
 
