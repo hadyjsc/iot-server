@@ -2,6 +2,7 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import IEnvConfigInterface from '../interfaces/IEnvConfig.interface';
 import { join } from 'path';
+import { SnakeNamingStrategy } from './snake-naming.strategy';
 
 @Injectable()
 export class ConfigService implements TypeOrmOptionsFactory {
@@ -28,7 +29,6 @@ export class ConfigService implements TypeOrmOptionsFactory {
         const entitiesPath = `${baseDir}${process.env.TYPEORM_ENTITIES}`;
         const migrationPath = `${baseDir}${process.env.TYPEORM_MIGRATIONS}`;
         const type: any = process.env.TYPEORM_CONNECTION;
-        console.log(entitiesPath);
         
         return {
             type,
@@ -39,7 +39,8 @@ export class ConfigService implements TypeOrmOptionsFactory {
             port: Number.parseInt(process.env.TYPEORM_PORT, 10),
             logging: false,
             entities: [entitiesPath],
-            // migrations: [migrationPath],
+            migrations: [migrationPath],
+            namingStrategy: new SnakeNamingStrategy(),
             migrationsRun: process.env.TYPEORM_MIGRATIONS_RUN === 'true',
         }
     }

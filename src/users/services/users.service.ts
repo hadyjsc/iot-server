@@ -1,18 +1,51 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dtos/create-user.dto';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { CreateUserDto, CreateUserFromRegistrationDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { Repository } from 'typeorm';
+import { UserRepository } from '../repositories/user.repository';
+import { RegistrationDto } from 'src/authentication/dtos/register.dto';
+import { Connection } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor( @InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) {
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly runner: Connection
+  ) {
 
   }
 
+  async createUserFromRegistration(register: RegistrationDto): Promise<UserEntity> {
+    let user: UserEntity
+
+    const queryRunner = this.runner.createQueryRunner()
+
+    await queryRunner.connect()
+    await queryRunner.startTransaction()
+
+    try {
+      let model = new CreateUserFromRegistrationDto()
+      model = register
+
+      let query = await this.userRepository.createUserRegistration(model)
+      user = await queryRunner.manager.save(query)
+      await queryRunner.commitTransaction()
+    } catch (error) {
+      await queryRunner.rollbackTransaction()
+      throw new InternalServerErrorException(error)
+    } finally {
+      await queryRunner.release()
+    }
+
+    return user
+  }
+
   async getAll(): Promise<UserEntity[]> {
-    return await this.userRepository.find()
+    return await this.userRepository.selectAll()
+  }
+
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    return this.userRepository.selectUserByEmail(email)
   }
 
   create(createUserDto: CreateUserDto) {

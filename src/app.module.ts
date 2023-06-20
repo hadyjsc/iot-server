@@ -1,3 +1,6 @@
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './commons/exceptions/exception.filter';
+import { SecurityService } from './commons/helpers/security.service';
 import { HelperModule } from './commons/helpers/helper.module';
 import { CommonModule } from './commons/common.module';
 import { Module } from '@nestjs/common';
@@ -6,6 +9,11 @@ import { HardwaresModule } from './hardwares/hardwares.module';
 import { UsersModule } from './users/users.module';
 import { PigeonModule, Transport } from 'pigeon-mqtt-nest'
 import { TransporterModule } from './transporter/transporter.module';
+import { AuthModule } from './authentication/auth.module';
+import { RolesModule } from './roles/roles.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './commons/interceptors/response.interceptor';
+import { LoggingInterceptor } from './commons/interceptors/logging.interceptor';
 
 @Module({
   imports: [
@@ -22,10 +30,22 @@ import { TransporterModule } from './transporter/transporter.module';
     }),
     HardwaresModule,
     UsersModule,
-    TransporterModule
+    TransporterModule,
+    AuthModule,
+    RolesModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    }, {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseInterceptor,
+    }, {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor
+    }],
 })
 
 export class AppModule { }
