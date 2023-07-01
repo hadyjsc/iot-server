@@ -8,3 +8,4 @@ export const SUCCESS_REGISTERED = "Data registered."
 
 export const FAILED_CREATED = "Can't create the data."
 export const FAILED_REGISTERED = "Invalid registration process."
+export const FAILED_GENERAL = "Invalid to proceed the request."

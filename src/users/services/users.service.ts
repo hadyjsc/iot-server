@@ -45,9 +45,18 @@ export class UsersService {
   }
 
   async getUserByEmail(email: string): Promise<UserEntity> {
-    return this.userRepository.selectUserByEmail(email)
+    const user = await this.userRepository.selectUserByEmail(email)
+    return user
   }
 
+  async findByUserID(id: number): Promise<UserEntity> {
+    return this.userRepository.findOneBy({id: id})
+  }
+
+  async findByUUID(uuid: string): Promise<UserEntity>{
+    return await this.userRepository.selectUserByUUID(uuid)
+  }
+  
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
@@ -60,8 +69,8 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(uuid: string, updateUserDto: UpdateUserDto) {
+    return `This action updates a #${uuid} user`;
   }
 
   remove(id: number) {

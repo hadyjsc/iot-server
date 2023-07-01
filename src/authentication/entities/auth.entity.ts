@@ -1,22 +1,23 @@
 import { AbstractEntity } from "src/commons/entities/abstract.entity";
 import { UserEntity } from "src/users/entities/user.entity";
-import { BaseEntity, Column, Index, JoinColumn, OneToOne } from "typeorm"
+import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, Generated, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm"
 
-export class AuthEntity extends BaseEntity implements AbstractEntity {
+@Entity({ name: 'authentications' })
+export class AuthEntity extends BaseEntity {
+    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     public id: number;
+
+    @Column()
+    @Generated("uuid")
     public uuid: string;
-    public createdAt: Date;
-    public updatedAt: Date;
-    public deletedAt: Date;
 
     @OneToOne(
         () => UserEntity,
-        (userEntity: UserEntity) => userEntity.id,
         { eager: true, nullable: true, onDelete: 'RESTRICT' }
     )
-    @JoinColumn()
+    @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
     @Index()
-    @Column({ unique: true })
     user_id: UserEntity
 
     @Column({ type: 'tinyint', unique: true })
@@ -30,4 +31,16 @@ export class AuthEntity extends BaseEntity implements AbstractEntity {
 
     @Column({ type: 'text' })
     token: string
+
+    @Column({ type: 'text' })
+    refresh_token: string
+
+    @CreateDateColumn()
+    public createdAt: Date;
+
+    @UpdateDateColumn()
+    public updatedAt: Date;
+
+    @DeleteDateColumn()
+    public deletedAt: Date;
 }

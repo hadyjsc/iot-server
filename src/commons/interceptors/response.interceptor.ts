@@ -9,6 +9,7 @@ import { Observable, map } from 'rxjs'
 export interface DataResponse<T> {
   statusCode: number;
   success: boolean;
+  messageTitle: string;
   message: string;
   data: T;
 }
@@ -24,6 +25,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, DataResponse<T
         map((data) => ({
             statusCode: ctx.getResponse().statusCode,
             success: data.success,
+            messageTitle: this.reflector.get<string>('message_title', context.getHandler) || data.messageTitle,
             message: this.reflector.get<string>('response_message', context.getHandler()) || data.message,
             data: data.result
         }))

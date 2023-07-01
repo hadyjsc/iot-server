@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { FAILED_REGISTERED, SUCCESS_FETCH } from 'src/commons/constants';
+import { AccessTokenGuard } from 'src/commons/guard/access-token.guard';
 
 @Controller('users')
 export class UsersController {
@@ -17,9 +19,16 @@ export class UsersController {
     return this.usersService.getAll();
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get(':email')
-  getUserByEmail(@Param('email') email: string) {
-    return this.getUserByEmail(email);
+  async getUserByEmail(@Param('email') email: string) {
+    try {
+      const user = await this.usersService.getUserByEmail(email);
+      let response = { result:user, success: true, message: SUCCESS_FETCH }
+      return response
+    } catch (error) {
+      throw new HttpException(FAILED_REGISTERED, HttpStatus.INTERNAL_SERVER_ERROR, { cause: error }); 
+    }
   }
 
   @Get(':id')
@@ -29,7 +38,7 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')

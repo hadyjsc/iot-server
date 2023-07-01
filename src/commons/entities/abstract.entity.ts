@@ -12,7 +12,6 @@ import {
 export abstract class AbstractEntity {
   @PrimaryGeneratedColumn()
   @PrimaryColumn()
-  @Exclude()
   public id: number;
 
   @Column()
@@ -20,14 +19,11 @@ export abstract class AbstractEntity {
   public uuid: string;
 
   @CreateDateColumn()
-  @Exclude()
   public createdAt: Date;
 
   @UpdateDateColumn()
-  @Exclude()
   public updatedAt: Date;
 
   @DeleteDateColumn()
-  @Exclude()
   public deletedAt: Date;
 }

@@ -48,8 +48,12 @@ export class CreateAuthentications1686926814640 implements MigrationInterface {
                     },
                     {
                         name: 'token',
-                        type: 'varchar',
-                        length: '255',
+                        type: 'text',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'refresh_token',
+                        type: 'text',
                         isNullable: true,
                     },
                     {

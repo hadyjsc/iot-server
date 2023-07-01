@@ -1,6 +1,5 @@
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AllExceptionsFilter } from './commons/exceptions/exception.filter';
-import { SecurityService } from './commons/helpers/security.service';
 import { HelperModule } from './commons/helpers/helper.module';
 import { CommonModule } from './commons/common.module';
 import { Module } from '@nestjs/common';
@@ -14,6 +13,7 @@ import { RolesModule } from './roles/roles.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './commons/interceptors/response.interceptor';
 import { LoggingInterceptor } from './commons/interceptors/logging.interceptor';
+import { AccessTokenGuard } from './commons/guard/access-token.guard';
 
 @Module({
   imports: [
@@ -45,6 +45,10 @@ import { LoggingInterceptor } from './commons/interceptors/logging.interceptor';
     }, {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AccessTokenGuard
     }],
 })
 

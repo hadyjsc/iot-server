@@ -8,4 +8,8 @@ export class SecurityService {
     async generatePassword(password: string) : Promise<string> {
         return bcrypt.hash(password, PASSWORD_SALT)
     }
+
+    async verifyPassword(password: string, hashed: string) : Promise<boolean> {
+        return bcrypt.compare(password, hashed)
+    }
 }
