@@ -102,8 +102,8 @@ export class CreateAuthentications1686926814640 implements MigrationInterface {
                 columnNames: ["user_id"],
                 referencedColumnNames: ["id"],
                 referencedTableName: "users",
-                onDelete: "RESTRICT"
-
+                onUpdate: "NO ACTION",
+                onDelete: "NO ACTION"
             })
         )
 

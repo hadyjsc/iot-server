@@ -107,8 +107,8 @@ export class CreateUsers1686910584822 implements MigrationInterface {
                 columnNames: ["role_id"],
                 referencedColumnNames: ["id"],
                 referencedTableName: "roles",
-                onDelete: "RESTRICT"
-
+                onUpdate: "NO ACTION",
+                onDelete: "NO ACTION"
             })
         )
     }

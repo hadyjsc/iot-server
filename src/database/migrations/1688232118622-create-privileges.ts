@@ -1,11 +1,11 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm"
 
-export class CreateRoles1686902542833 implements MigrationInterface {
+export class CreatePrivileges1688232118622 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "roles",
+                name: "privileges",
                 columns: [
                     {
                         name: 'id',
@@ -22,16 +22,22 @@ export class CreateRoles1686902542833 implements MigrationInterface {
                         isNullable: false,
                     },
                     {
-                        name: 'name',
-                        type: 'varchar',
-                        length: '100',
+                        name: 'user_id',
+                        type: 'bigint',
+                        unsigned: true,
                         isNullable: false
                     },
                     {
-                        name: 'alias',
-                        type: 'varchar',
-                        length: '100',
+                        name: 'permission_id',
+                        type: 'bigint',
+                        unsigned: true,
                         isNullable: false
+                    },
+                    {
+                        name: 'is_active',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: true
                     },
                     {
                         name: 'created_at',
@@ -67,12 +73,49 @@ export class CreateRoles1686902542833 implements MigrationInterface {
                         isNullable: true,
                     },
                 ]
+            }), true, true
+        )
+
+        await queryRunner.createForeignKey(
+            "privileges",
+            new TableForeignKey({
+                name: 'fk_privileges_user_id_users_id',
+                columnNames: ["user_id"],
+                referencedColumnNames: ["id"],
+                referencedTableName: "users",
+                onDelete: "RESTRICT"
+
+            })
+        )
+
+        await queryRunner.createForeignKey(
+            "privileges",
+            new TableForeignKey({
+                name: 'fk_privileges_permission_id_permissions_id',
+                columnNames: ["permission_id"],
+                referencedColumnNames: ["id"],
+                referencedTableName: "permissions",
+                onUpdate: "NO ACTION",
+                onDelete: "NO ACTION"
+
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('roles')
+        const table = await queryRunner.getTable("privileges")
+        const foreignKeyUser = table.foreignKeys.find(
+            (fk) => fk.columnNames.indexOf("user_id") !== -1
+        )
+
+        const foreignKeyPermission = table.foreignKeys.find(
+            (fk) => fk.columnNames.indexOf("permission_id") !== -1
+        )
+
+        await queryRunner.dropForeignKey("users", foreignKeyUser)
+        await queryRunner.dropForeignKey("permissions", foreignKeyPermission)
+        
+        await queryRunner.dropTable('privileges')
     }
 
 }

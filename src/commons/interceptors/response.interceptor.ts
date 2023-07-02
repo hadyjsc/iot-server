@@ -7,9 +7,9 @@ import { Reflector } from '@nestjs/core';
 import { Observable, map } from 'rxjs'
 
 export interface DataResponse<T> {
-  statusCode: number;
+  status_code: number;
   success: boolean;
-  messageTitle: string;
+  message_title: string;
   message: string;
   data: T;
 }
@@ -23,9 +23,9 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, DataResponse<T
       .handle()
       .pipe(
         map((data) => ({
-            statusCode: ctx.getResponse().statusCode,
+            status_code: ctx.getResponse().statusCode,
             success: data.success,
-            messageTitle: this.reflector.get<string>('message_title', context.getHandler) || data.messageTitle,
+            message_title: this.reflector.get<string>('message_title', context.getHandler()) || data.messageTitle,
             message: this.reflector.get<string>('response_message', context.getHandler()) || data.message,
             data: data.result
         }))

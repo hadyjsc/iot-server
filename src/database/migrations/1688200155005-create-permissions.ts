@@ -1,11 +1,11 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm"
 
-export class CreateRoles1686902542833 implements MigrationInterface {
+export class CreatePermissions1688200155005 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "roles",
+                name: "permissions",
                 columns: [
                     {
                         name: 'id',
@@ -28,10 +28,22 @@ export class CreateRoles1686902542833 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: 'alias',
+                        name: 'type',
                         type: 'varchar',
                         length: '100',
                         isNullable: false
+                    },
+                    {
+                        name: 'feature_id',
+                        type: 'bigint',
+                        unsigned: true,
+                        isNullable: true,
+                    },
+                    {
+                        name: 'is_active',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: true
                     },
                     {
                         name: 'created_at',
@@ -67,12 +79,32 @@ export class CreateRoles1686902542833 implements MigrationInterface {
                         isNullable: true,
                     },
                 ]
+            }), true, true,
+        )
+
+        await queryRunner.createForeignKey(
+            "permissions",
+            new TableForeignKey({
+                name: 'fk_permission_feature_id_features_id',
+                columnNames: ["feature_id"],
+                referencedColumnNames: ["id"],
+                referencedTableName: "features",
+                onUpdate: 'NO ACTION',
+                onDelete: "NO ACTION"
+
             })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('roles')
+        const table = await queryRunner.getTable("permissions")
+        const foreignKeyFeature = table.foreignKeys.find(
+            (fk) => fk.columnNames.indexOf("feature_id") !== -1
+        )
+
+        await queryRunner.dropForeignKey("features", foreignKeyFeature)
+
+        await queryRunner.dropTable('permissions')
     }
 
 }

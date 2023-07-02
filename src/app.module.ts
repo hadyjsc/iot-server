@@ -1,8 +1,8 @@
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, Reflector } from '@nestjs/core';
 import { AllExceptionsFilter } from './commons/exceptions/exception.filter';
 import { HelperModule } from './commons/helpers/helper.module';
 import { CommonModule } from './commons/common.module';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { HardwaresModule } from './hardwares/hardwares.module';
 import { UsersModule } from './users/users.module';
@@ -14,6 +14,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './commons/interceptors/response.interceptor';
 import { LoggingInterceptor } from './commons/interceptors/logging.interceptor';
 import { AccessTokenGuard } from './commons/guard/access-token.guard';
+import { FeaturesModule } from './features/features.module';
+import { PermissionsModule } from './permissions/permissions.module';
+import { PrivilegesModule } from './privileges/privileges.module';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from './users/services/users.service';
+import { UserRepository } from './users/repositories/user.repository';
 
 @Module({
   imports: [
@@ -33,6 +39,9 @@ import { AccessTokenGuard } from './commons/guard/access-token.guard';
     TransporterModule,
     AuthModule,
     RolesModule,
+    FeaturesModule,
+    PermissionsModule,
+    PrivilegesModule,
   ],
   controllers: [AppController],
   providers: [
@@ -48,8 +57,12 @@ import { AccessTokenGuard } from './commons/guard/access-token.guard';
     },
     {
       provide: APP_GUARD,
-      useClass: AccessTokenGuard
-    }],
+      useClass:  AccessTokenGuard,
+    },
+    JwtService,
+    UsersService, 
+    UserRepository
+  ],
 })
 
 export class AppModule { }

@@ -36,3 +36,5 @@ lerna-debug.log*
 
 .hot.env
 .cold.env
+
+# npm run typeorm:create --name=create-privileges

@@ -34,6 +34,7 @@ specifiers:
   eslint: ^8.42.0
   eslint-config-prettier: ^8.8.0
   eslint-plugin-prettier: ^4.2.1
+  express: ^4.18.2
   handlebars: ^4.7.7
   jest: 29.5.0
   mysql2: ^3.3.5
@@ -62,11 +63,11 @@ dependencies:
   '@nestjs/config': 2.3.4_4f4bccu23zdwhaiklyj5lclkuq
   '@nestjs/core': 9.4.3_6vjxig7besv6xotowyri5cfrqm
   '@nestjs/jwt': 10.1.0_@nestjs+common@9.4.3
-  '@nestjs/mapped-types': github.com/nestjs/mapped-types/4105d4c87107fe6ed1dc513a73da61c7354aff6b_ut5q2mnredw42nr35mi2g3jt6q
+  '@nestjs/mapped-types': github.com/nestjs/mapped-types/fd2b29df5188c5a7f3b006307196767d40cbd734_ut5q2mnredw42nr35mi2g3jt6q
   '@nestjs/microservices': 9.4.3_bi7bysvuf24mk7hodfhns37dia
   '@nestjs/passport': 10.0.0_swdehgqxw2nt4jhhnqbb6yp354
   '@nestjs/platform-express': 9.4.3_vw2vky2jc6gkm6gj7lzrgmojyi
-  '@nestjs/swagger': github.com/nestjs/swagger/6ef0f8364bc9cc132d35fa1c656ee32ecb6f106c_2venm5dohx5nnlwdefxkr5zuo4
+  '@nestjs/swagger': github.com/nestjs/swagger/6fde3ecedca3d4eab4428755f74ea4a5db7e4a69_2venm5dohx5nnlwdefxkr5zuo4
   '@nestjs/typeorm': 9.0.1_zqzk7ej2m5tninafrbxb2g34h4
   '@types/cookie-parser': 1.4.3
   '@types/nodemailer': 6.4.8
@@ -78,6 +79,7 @@ dependencies:
   class-validator: 0.14.0
   cookie-parser: 1.4.6
   dotenv: 16.1.4
+  express: 4.18.2
   handlebars: 4.7.7
   mysql2: 3.3.5
   nodemailer: 6.9.3
@@ -1108,8 +1110,8 @@ packages:
       jsonwebtoken: 9.0.0
     dev: false
 
-  /@nestjs/mapped-types/2.0.0_ut5q2mnredw42nr35mi2g3jt6q:
-    resolution: {integrity: sha512-JyIOY1OE4x2t8Z2ImWLQJnHVqLCBHJZXm6RqcOG3+4rIsqMQxm5smHbb7H5C6tLAdDcRYd/fG2gYK1J1GiqKLw==}
+  /@nestjs/mapped-types/2.0.2_ut5q2mnredw42nr35mi2g3jt6q:
+    resolution: {integrity: sha512-V0izw6tWs6fTp9+KiiPUbGHWALy563Frn8X6Bm87ANLRuE46iuBMD5acKBDP5lKL/75QFvrzSJT7HkCbB0jTpg==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       class-transformer: ^0.4.0 || ^0.5.0
@@ -5349,7 +5351,7 @@ packages:
     dev: false
 
   /ms/2.0.0:
-    resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=}
+    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
 
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
@@ -7460,11 +7462,11 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/nestjs/mapped-types/4105d4c87107fe6ed1dc513a73da61c7354aff6b_ut5q2mnredw42nr35mi2g3jt6q:
-    resolution: {tarball: https://codeload.github.com/nestjs/mapped-types/tar.gz/4105d4c87107fe6ed1dc513a73da61c7354aff6b}
-    id: github.com/nestjs/mapped-types/4105d4c87107fe6ed1dc513a73da61c7354aff6b
+  github.com/nestjs/mapped-types/fd2b29df5188c5a7f3b006307196767d40cbd734_ut5q2mnredw42nr35mi2g3jt6q:
+    resolution: {tarball: https://codeload.github.com/nestjs/mapped-types/tar.gz/fd2b29df5188c5a7f3b006307196767d40cbd734}
+    id: github.com/nestjs/mapped-types/fd2b29df5188c5a7f3b006307196767d40cbd734
     name: '@nestjs/mapped-types'
-    version: 2.0.0
+    version: 2.0.2
     prepare: true
     requiresBuild: true
     peerDependencies:
@@ -7484,11 +7486,11 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  github.com/nestjs/swagger/6ef0f8364bc9cc132d35fa1c656ee32ecb6f106c_2venm5dohx5nnlwdefxkr5zuo4:
-    resolution: {tarball: https://codeload.github.com/nestjs/swagger/tar.gz/6ef0f8364bc9cc132d35fa1c656ee32ecb6f106c}
-    id: github.com/nestjs/swagger/6ef0f8364bc9cc132d35fa1c656ee32ecb6f106c
+  github.com/nestjs/swagger/6fde3ecedca3d4eab4428755f74ea4a5db7e4a69_2venm5dohx5nnlwdefxkr5zuo4:
+    resolution: {tarball: https://codeload.github.com/nestjs/swagger/tar.gz/6fde3ecedca3d4eab4428755f74ea4a5db7e4a69}
+    id: github.com/nestjs/swagger/6fde3ecedca3d4eab4428755f74ea4a5db7e4a69
     name: '@nestjs/swagger'
-    version: 7.0.2
+    version: 7.0.12
     peerDependencies:
       '@fastify/static': ^6.0.0
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -7506,7 +7508,7 @@ packages:
     dependencies:
       '@nestjs/common': 9.4.3_paqhex6eslbo3b6nzi5oqidxz4
       '@nestjs/core': 9.4.3_6vjxig7besv6xotowyri5cfrqm
-      '@nestjs/mapped-types': 2.0.0_ut5q2mnredw42nr35mi2g3jt6q
+      '@nestjs/mapped-types': 2.0.2_ut5q2mnredw42nr35mi2g3jt6q
       class-transformer: 0.3.2
       class-validator: 0.14.0
       js-yaml: 4.1.0
