@@ -1,23 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, Req } from '@nestjs/common';
-import { FeaturesService } from '../services/features.service';
-import { CreateFeatureDto } from '../dtos/create-feature.dto';
-import { UpdateFeatureDto } from '../dtos/update-feature.dto';
-import { AccessTokenGuard } from 'src/commons/guard/access-token.guard';
-import { SUCCESS_CREATED, FAILED_CREATED, FAILED_GENERAL, SUCCESS_FETCH, SUCCESS_UPDATED } from 'src/commons/constants';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
+import { PrivilegesService } from '../services/privileges.service';
+import { CreatePrivilegeDto } from '../dtos/create-privilege.dto';
+import { UpdatePrivilegeDto } from '../dtos/update-privilege.dto';
 import { ResponseMessageTitle } from 'src/commons/decorators/response-message.decorator';
+import { AccessTokenGuard } from 'src/commons/guard/access-token.guard';
 import { CurrentUserDecorator } from 'src/commons/decorators/current-user.decorators';
+import { SUCCESS_CREATED, FAILED_CREATED, FAILED_GENERAL, SUCCESS_FETCH, SUCCESS_UPDATED } from 'src/commons/constants';
 
-@Controller('features')
-export class FeaturesController {
-  constructor(private readonly featuresService: FeaturesService) {}
+@Controller('privileges')
+export class PrivilegesController {
+  constructor(private readonly privilegesService: PrivilegesService) {}
 
   @UseGuards(AccessTokenGuard)
   @Post()
   @ResponseMessageTitle("Created")
-  async create(@Body() createFeatureDto: CreateFeatureDto, @CurrentUserDecorator() user: any) {
+  async create(@Body() createPrivilegeDto: CreatePrivilegeDto, @CurrentUserDecorator() user: any) {
     try {
-      createFeatureDto.created_by = user.primary;
-      const result = await this.featuresService.create(createFeatureDto);
+      createPrivilegeDto.created_by = user.primary;
+      const result = await this.privilegesService.create(createPrivilegeDto);
       let response = { result, success: true, message: SUCCESS_CREATED }
       return response
     } catch (error) {
@@ -30,7 +30,7 @@ export class FeaturesController {
   @ResponseMessageTitle("Successfuly")
   async findAll() {
     try {
-      const result = await this.featuresService.findAll();
+      const result = await this.privilegesService.findAll();
       let response = { result, success: true, message: SUCCESS_FETCH }
       return response
     } catch (error) {
@@ -43,7 +43,7 @@ export class FeaturesController {
   @ResponseMessageTitle("Successfuly")
   async findOne(@Param('id') id: string) {
     try {
-      const result = await this.featuresService.findOne(id);
+      const result = await this.privilegesService.findOne(id);
       let response = { result, success: true, message: SUCCESS_FETCH }
       return response
     } catch (error) {
@@ -54,10 +54,10 @@ export class FeaturesController {
   @UseGuards(AccessTokenGuard)
   @Patch(':id')
   @ResponseMessageTitle("Successfuly")
-  async update(@Param('id') id: string, @Body() updateFeatureDto: UpdateFeatureDto, @CurrentUserDecorator() user: any) {
+  async update(@Param('id') id: string, @Body() updatePrivilegeDto: UpdatePrivilegeDto, @CurrentUserDecorator() user: any) {
     try {
-      updateFeatureDto.updated_by = user.primary;
-      const result = await this.featuresService.update(id, updateFeatureDto);
+      updatePrivilegeDto.updated_by = user.primary;
+      const result = await this.privilegesService.update(id, updatePrivilegeDto);
       let response = { result, success: true, message: SUCCESS_UPDATED }
       return response
     } catch (error) {
@@ -67,6 +67,6 @@ export class FeaturesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.featuresService.remove(+id);
+    return this.privilegesService.remove(+id);
   }
 }

@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { FeaturesService } from './services/features.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FeaturesController } from './controllers/features.controller';
-import { FeaturesRepository } from './repositories/features.repositories';
+import { FeaturesRepository } from './repositories/feature.repository';
 import { Feature } from './entities/feature.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/services/users.service';
