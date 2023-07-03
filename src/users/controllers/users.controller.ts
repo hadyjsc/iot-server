@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { FAILED_REGISTERED, SUCCESS_FETCH } from 'src/commons/constants';
+import { FAILED_GENERAL, FAILED_REGISTERED, SUCCESS_FETCH } from 'src/commons/constants';
 import { AccessTokenGuard } from 'src/commons/guard/access-token.guard';
+import { CurrentUserDecorator } from 'src/commons/decorators/current-user.decorators';
 
 @Controller('users')
 export class UsersController {
@@ -31,6 +32,7 @@ export class UsersController {
     }
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
@@ -44,5 +46,21 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('/me/:id/privilege')
+  async privilege(@Param('id') id: string, @CurrentUserDecorator() user: any) {
+    try {
+      if (id == user.id) {
+        const privilege = await this.usersService.getUserPrivilege(user);
+        let response = { result:privilege, success: true, message: SUCCESS_FETCH }
+      return response
+      } else {
+        throw new HttpException(FAILED_GENERAL, HttpStatus.FORBIDDEN, {cause: new Error('Access denied.')})
+      }
+    } catch (error) {
+      throw new HttpException(FAILED_GENERAL, HttpStatus.INTERNAL_SERVER_ERROR, { cause: error }); 
+    }
   }
 }

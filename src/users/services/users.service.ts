@@ -76,4 +76,38 @@ export class UsersService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+
+  async getUserPrivilege(user: any) {
+    const { id , email } = user
+
+    const userPrivilege = await this.userRepository.selectUserPrivilege(id, email)
+
+    if (userPrivilege) {
+      const role = {
+        uID: userPrivilege[0].uID,
+        uStatus: userPrivilege[0].uStatus,
+        rID: userPrivilege[0].rID,
+        rName: userPrivilege[0].rName,
+        rAlias: userPrivilege[0].rAlias
+      }
+
+      let permission = []
+      userPrivilege.forEach(e => {
+        permission.push({
+          pID: e.pID,
+          pActive: e.pIsActive,
+          permissionID: e.p2ID,
+          permissionName: e.p2Name,
+          permissionType: e.p2Type,
+          permissionActive: e.p2IsActive
+        })
+      });
+
+      const feature = [...new Map(userPrivilege.map((item) => [item.fID, {id: item.fID, name: item.fName, active: item.fIsActive}])).values()]
+
+      return {role, permission, feature}
+    }
+    
+    return null
+  }
 }
