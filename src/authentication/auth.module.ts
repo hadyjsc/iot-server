@@ -10,6 +10,8 @@ import { AccessTokenStrategy } from './strategy/access-token.strategy';
 import { RefreshTokenStrategy } from './strategy/refresh-token.strategy';
 import { AuthRepository } from './repositories/auth.repository';
 import { PassportModule } from '@nestjs/passport';
+import { PermissionsService } from 'src/permissions/services/permissions.service';
+import { PermissionRepository } from 'src/permissions/repositories/permission.repository';
 
 @Module({
   imports:[
@@ -26,7 +28,9 @@ import { PassportModule } from '@nestjs/passport';
     JwtService, 
     AccessTokenStrategy,
     RefreshTokenStrategy,
-    AuthRepository
+    AuthRepository,
+    PermissionsService,
+    PermissionRepository
   ]
 })
 export class AuthModule { }

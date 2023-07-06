@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { UsersService } from '../services/users.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { FAILED_GENERAL, FAILED_REGISTERED, SUCCESS_FETCH } from 'src/commons/constants';
+import { FAILED_CREATED, FAILED_GENERAL, FAILED_REGISTERED, SUCCESS_CREATED, SUCCESS_FETCH } from 'src/commons/constants';
 import { AccessTokenGuard } from 'src/commons/guard/access-token.guard';
 import { CurrentUserDecorator } from 'src/commons/decorators/current-user.decorators';
 
@@ -10,11 +10,19 @@ import { CurrentUserDecorator } from 'src/commons/decorators/current-user.decora
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    try {
+      const user = await this.usersService.create(createUserDto);
+      let response = { result:user, success: true, message: SUCCESS_CREATED }
+      return response
+    } catch (error) {
+      throw new HttpException(FAILED_CREATED, HttpStatus.INTERNAL_SERVER_ERROR, { cause: error }); 
+    }
   }
 
+  @UseGuards(AccessTokenGuard)
   @Get()
   findAll() {
     return this.usersService.getAll();

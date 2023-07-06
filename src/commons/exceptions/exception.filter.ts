@@ -10,6 +10,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ENV_PRODUCTION } from '../constants';
+import { HttpStatusCodeToString } from '../enum/http-status.enum';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -18,7 +19,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     
     const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-    const title = exception instanceof Error ? exception ? exception.getResponse()['error'] ||  exception['message'] : '' : 'Internal server error'
+    let title = exception instanceof Error ? exception ? exception.getResponse()['error'] ||  exception['message'] : '' : 'Internal server error'
     
     let err = {}
     if (exception.getResponse()['message']) {
@@ -33,11 +34,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else {
       message = exception.message
     }
+    console.log("status code", status);
+    
+    if (title == message) {
+      title = HttpStatusCodeToString(status)
+    }
     
     response.status(status).json({
       success: false,
-      statusCode: status,
-      messageTitle: title,
+      status_code: status,
+      message_title: title,
       message,
       error: process.env.ENV != ENV_PRODUCTION ? err : null
     });

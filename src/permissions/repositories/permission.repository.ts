@@ -65,4 +65,25 @@ export class PermissionRepository extends Repository<Permission> {
             throw new InternalServerErrorException(error)
         }
     }
+
+    async userPermissionIsExist(name: string, user_id: number) : Promise<boolean> {
+        try {
+            const sql = `SELECT
+                    p.name,
+                    p2.user_id
+                from
+                    permissions p
+                inner join privileges p2 ON
+                    p.id = p2.permission_id
+                WHERE
+                    name = ?
+                    AND user_id = ?`
+            const exist = await this.dataSource.query(sql, [name, user_id])
+            
+            if (exist[0]) return true
+            return false
+        } catch (error) {
+            throw new InternalServerErrorException(error)
+        }
+    }
 }

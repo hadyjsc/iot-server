@@ -8,10 +8,12 @@ import { Feature } from './entities/feature.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/services/users.service';
 import { UserRepository } from 'src/users/repositories/user.repository';
+import { PermissionsService } from 'src/permissions/services/permissions.service';
+import { PermissionRepository } from 'src/permissions/repositories/permission.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Feature])],
   controllers: [FeaturesController],
-  providers: [FeaturesService, FeaturesRepository, JwtService, UsersService, UserRepository]
+  providers: [FeaturesService, FeaturesRepository, JwtService, UsersService, UserRepository, PermissionsService, PermissionRepository]
 })
 export class FeaturesModule {}

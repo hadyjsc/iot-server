@@ -59,4 +59,13 @@ export class PermissionsService {
   remove(id: number) {
     return `This action removes a #${id} permission`;
   }
+
+  async checkUserPermission(permissionName: string, userID: number) : Promise<boolean> {
+    try {
+      const exist = await this.repository.userPermissionIsExist(permissionName, userID)
+      return exist
+    } catch (error) {
+      throw new InternalServerErrorException(error)
+    }
+  }
 }

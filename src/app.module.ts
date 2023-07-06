@@ -20,6 +20,8 @@ import { PrivilegesModule } from './privileges/privileges.module';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users/services/users.service';
 import { UserRepository } from './users/repositories/user.repository';
+import { PermissionsService } from './permissions/services/permissions.service';
+import { PermissionRepository } from './permissions/repositories/permission.repository';
 
 @Module({
   imports: [
@@ -61,7 +63,9 @@ import { UserRepository } from './users/repositories/user.repository';
     },
     JwtService,
     UsersService, 
-    UserRepository
+    UserRepository,
+    PermissionsService,
+    PermissionRepository
   ],
 })
 

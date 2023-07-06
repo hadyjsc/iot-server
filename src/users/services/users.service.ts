@@ -5,12 +5,14 @@ import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from '../repositories/user.repository';
 import { RegistrationDto } from 'src/authentication/dtos/register.dto';
 import { Connection } from 'typeorm';
+import { PermissionsService } from 'src/permissions/services/permissions.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly runner: Connection
+    private readonly runner: Connection,
+    private readonly permissionService: PermissionsService
   ) {
 
   }
@@ -57,7 +59,7 @@ export class UsersService {
     return await this.userRepository.selectUserByUUID(uuid)
   }
   
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
@@ -109,5 +111,13 @@ export class UsersService {
     }
     
     return null
+  }
+
+  async userPermissionIsExist(payload: any): Promise<boolean> {
+    const exist = await this.permissionService.checkUserPermission(payload.permission, payload.user_id)
+    if (exist) {
+      return true
+    }
+    return false
   }
 }
