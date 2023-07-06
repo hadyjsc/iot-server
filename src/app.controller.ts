@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { Interface } from 'readline';
 import { FeatureFlagService } from './commons/helpers/featureflag.service';
+import { PublicAPI } from './commons/decorators/public-api.decorators';
 
 @Controller()
 export class AppController {
@@ -8,16 +9,19 @@ export class AppController {
     this.featureFlag = featureFlag
   }
 
-  @Get("health-check")
+  @PublicAPI()
+  @Get()
   healthCheck() {
-    // var flag = this.featureFlag.get("TEST")
-    // console.log(flag);
-    
     let response = {
       success : true,
-      message : 'How are you ?',
-      statusCode: 200
+      message : 'Server it\'s works!!',
+      result: {
+        app: process.env.APP_NAME,
+        version: process.env.VERSION
+      },
+      status_code: 200
     }
+
     return response;
   }
 }

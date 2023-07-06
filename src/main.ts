@@ -7,11 +7,12 @@ import * as csurf from 'csurf';
 
 async function bootstrap() {
   const app = await ApplicationContext();
-  app.useGlobalPipes(new ValidationPipe())
   app.use(cookieParser())
+  // app.use(csurf())
   app.enableCors()
   app.use(helmet())
-  app.use(csurf())
+
+  app.useGlobalPipes(new ValidationPipe())
   await app.listen(app.get(ConfigService).get("APP_PORT")).then((v) => {
     console.log(`Server ${app.get(ConfigService).get("APP_NAME")} is running on port ${app.get(ConfigService).get("APP_PORT")}`);
   });
