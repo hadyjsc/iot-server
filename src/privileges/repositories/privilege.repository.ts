@@ -11,18 +11,11 @@ export class PrivilegeRepository extends Repository<Privilege> {
         super(Privilege, dataSource.createEntityManager())
     }
 
-    async insertData(data: CreatePrivilegeDto): Promise<Privilege> {
+    async insertData(data: any): Promise<any> {
         try {
-            const insert = this.create({
-                uuid: uuidv4(),
-                user_id: data.user_id,
-                permission_id: data.permission_id,
-                is_active: data.is_active,
-                created_at: new Date(),
-                created_by: data.created_by
-            })
+            const insert = this.createQueryBuilder().insert().values(data)
 
-            return await this.save(insert)
+            return await insert.execute()
         } catch (error) {
             throw new InternalServerErrorException(error)
         }

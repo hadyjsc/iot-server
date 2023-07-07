@@ -5,7 +5,7 @@ export class CreatePrivilegeDto {
     user_id: number
 
     @IsNotEmpty()
-    permission_id: number
+    permission_id: object
 
     @IsNotEmpty()
     is_active: boolean

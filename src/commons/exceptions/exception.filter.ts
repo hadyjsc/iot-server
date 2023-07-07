@@ -18,9 +18,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     
-    exception instanceof Error ? console.log(exception): '';
-    
-
     const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     let title = exception instanceof Error ? exception ? exception.getResponse()['error'] ||  exception['message'] : '' : 'Internal server error'
     
@@ -37,7 +34,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else {
       message = exception.message
     }
-    console.log("status code", status);
     
     if (title == message) {
       title = HttpStatusCodeToString(status)

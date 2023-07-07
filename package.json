@@ -22,7 +22,11 @@
     "typeorm:run": "npm run typeorm migration:run -- -d src/commons/configs/database.config.ts",
     "typeorm:generate": "npm run typeorm -- -d src/commons/configs/database.config.ts migration:generate src/database/migrations/$npm_config_name",
     "typeorm:create": "npm run typeorm -- migration:create src/database/migrations/$npm_config_name",
-    "typeorm:revert": "npm run typeorm -- -d src/commons/configs/database.config.ts migration:revert"
+    "typeorm:revert": "npm run typeorm -- -d src/commons/configs/database.config.ts migration:revert",
+    
+    "seed:generate": "npm run typeorm -- migration:create src/database/seeders/$npm_config_name",
+    "seed:up": "npm run typeorm migration:run -- -d src/commons/configs/seeds.config.ts",
+    "seed:down": "npm run typeorm -- migration:revert -- -d src/commons/configs/seeds.config.ts"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
@@ -59,6 +63,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "7.8.0",
     "typeorm": "~0.3.16",
+    "typeorm-seeding": "^1.6.1",
     "uuid": "^9.0.0",
     "webpack": "^5.87.0"
   },

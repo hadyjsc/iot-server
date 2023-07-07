@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreatePrivilegeDto } from '../dtos/create-privilege.dto';
 import { UpdatePrivilegeDto } from '../dtos/update-privilege.dto';
 import { PrivilegeRepository } from '../repositories/privilege.repository';
+import { isArray } from 'class-validator';
+import {v4 as uuidv4} from "uuid"
 
 @Injectable()
 export class PrivilegesService {
@@ -10,7 +12,31 @@ export class PrivilegesService {
   }
 
   async create(createPrivilegeDto: CreatePrivilegeDto) {
-    const created = await this.repository.insertData(createPrivilegeDto)
+    let payload = []
+    if (isArray(createPrivilegeDto.permission_id)) {
+      const permission = createPrivilegeDto.permission_id
+      for (const item of permission) {
+        payload.push({
+          uuid: uuidv4(),
+          user_id: createPrivilegeDto.user_id,
+          permission_id: item,
+          is_active: createPrivilegeDto.is_active,
+          created_at: new Date(),
+          created_by: createPrivilegeDto.created_by
+        })
+      }
+    } else {
+      payload.push({
+        uuid: uuidv4(),
+          user_id: createPrivilegeDto.user_id,
+          permission_id: createPrivilegeDto.permission_id,
+          is_active: createPrivilegeDto.is_active,
+          created_at: new Date(),
+          created_by: createPrivilegeDto.created_by
+      })
+    }
+    
+    const created = await this.repository.insertData(payload)
     return created
   }
 
