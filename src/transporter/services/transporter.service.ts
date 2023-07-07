@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateTransporterDto } from './dto/create-transporter.dto';
-import { UpdateTransporterDto } from './dto/update-transporter.dto';
+import { CreateTransporterDto } from '../dtos/create-transporter.dto';
+import { UpdateTransporterDto } from '../dtos/update-transporter.dto';
 import { Client, Packet, Payload, PigeonService, Subscription, Topic, onClient, onClientReady, onPreConnect, onPublish, onSubscribe } from 'pigeon-mqtt-nest';
 
 @Injectable()

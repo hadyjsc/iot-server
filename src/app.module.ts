@@ -4,7 +4,6 @@ import { HelperModule } from './commons/helpers/helper.module';
 import { CommonModule } from './commons/common.module';
 import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { HardwaresModule } from './hardwares/hardwares.module';
 import { UsersModule } from './users/users.module';
 import { PigeonModule, Transport } from 'pigeon-mqtt-nest'
 import { TransporterModule } from './transporter/transporter.module';
@@ -36,7 +35,6 @@ import { PermissionRepository } from './permissions/repositories/permission.repo
       connectTimeout: process.env.MQTT_CONNECT_TIMEOUT,
       heartbeatInterval: process.env.MQTT_HEART_BEAT_INTERVAL,
     }),
-    HardwaresModule,
     UsersModule,
     TransporterModule,
     AuthModule,
