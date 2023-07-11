@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateTransporterDto } from '../dtos/create-transporter.dto';
+import { CreateTransporterDto, SendMessage } from '../dtos/create-transporter.dto';
 import { UpdateTransporterDto } from '../dtos/update-transporter.dto';
 import { Client, Packet, Payload, PigeonService, Subscription, Topic, onClient, onClientReady, onPreConnect, onPublish, onSubscribe } from 'pigeon-mqtt-nest';
 
@@ -27,6 +27,18 @@ export class TransporterService {
   @onPublish()
   async OnPublish(@Topic() topic, @Packet() packet, @Payload() payload, @Client() client) {
     console.log("Function: @OnPublish()", payload);
+  }
+
+  async sendMessage(data: SendMessage) {
+    const sent = await this.aedesService.publish({
+      topic: process.env.TEST_MESSAGE,
+      qos: 0,
+      cmd: "publish",
+      payload: JSON.stringify(data),
+      dup: false,
+      retain: false
+    })
+    return sent
   }
 
   create(createTransporterDto: CreateTransporterDto) {

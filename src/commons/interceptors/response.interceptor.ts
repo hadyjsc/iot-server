@@ -24,10 +24,10 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, DataResponse<T
       .pipe(
         map((data) => ({
             status_code: ctx.getResponse().statusCode,
-            success: data.success,
-            message_title: this.reflector.get<string>('message_title', context.getHandler()) || data.messageTitle,
-            message: this.reflector.get<string>('response_message', context.getHandler()) || data.message,
-            data: data.result
+            success: data?.success || false,
+            message_title: this.reflector.get<string>('message_title', context.getHandler()) || data?.messageTitle,
+            message: this.reflector.get<string>('response_message', context.getHandler()) || data?.message,
+            data: data?.result || []
         }))
       );
   }
